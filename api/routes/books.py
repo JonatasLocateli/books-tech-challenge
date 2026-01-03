@@ -1,45 +1,48 @@
 from flask_restx import Namespace, Resource, fields
 from flask import request
 from api.database import get_db_connection
-from flask import Blueprint, jsonify, request
 
-# Blueprint corretamente definido
-books_bp = Blueprint("books", __name__, url_prefix="/api/v1/books")
-api = Namespace("books", description="Operações relacionadas a livros")
+# Namespace do Flask-RESTX
+api = Namespace(
+    "books",
+    description="Operações relacionadas a livros"
+)
 
-# Modelo Swagger (documentação)
+# ===============================
+# MODELO SWAGGER
+# ===============================
 book_model = api.model("Book", {
-    "id": fields.Integer,
-    "title": fields.String,
-    "price": fields.Float,
-    "rating": fields.Integer,
-    "availability": fields.String,
-    "category": fields.String,
-    "image_url": fields.String,
-    "product_url": fields.String
+    "id": fields.Integer(description="ID do livro"),
+    "title": fields.String(description="Título do livro"),
+    "price": fields.Float(description="Preço"),
+    "rating": fields.Integer(description="Avaliação (1 a 5)"),
+    "availability": fields.String(description="Disponibilidade"),
+    "category": fields.String(description="Categoria"),
+    "image_url": fields.String(description="URL da imagem"),
+    "product_url": fields.String(description="URL do produto")
 })
 
-
+# ===============================
+# GET /api/v1/books
+# ===============================
 @api.route("/")
 class BookList(Resource):
     @api.marshal_list_with(book_model)
+    @api.doc(description="Lista todos os livros disponíveis")
     def get(self):
-        """
-        Lista todos os livros disponíveis.
-        """
         conn = get_db_connection()
         books = conn.execute("SELECT * FROM books").fetchall()
         conn.close()
         return books
 
-
+# ===============================
+# GET /api/v1/books/{id}
+# ===============================
 @api.route("/<int:book_id>")
 class BookDetail(Resource):
     @api.marshal_with(book_model)
+    @api.doc(description="Retorna detalhes de um livro pelo ID")
     def get(self, book_id):
-        """
-        Retorna detalhes de um livro pelo ID.
-        """
         conn = get_db_connection()
         book = conn.execute(
             "SELECT * FROM books WHERE id = ?",
@@ -47,21 +50,33 @@ class BookDetail(Resource):
         ).fetchone()
         conn.close()
 
-        if book is None:
+        if not book:
             api.abort(404, "Livro não encontrado")
 
         return book
 
-
+# ===============================
+# GET /api/v1/books/search
+# ===============================
 @api.route("/search")
 class BookSearch(Resource):
     @api.marshal_list_with(book_model)
+    @api.doc(
+        description="Busca livros por filtros",
+        params={
+            "title": "Parte do título",
+            "category": "Categoria",
+            "min_price": "Preço mínimo",
+            "max_price": "Preço máximo",
+            "rating": "Avaliação mínima"
+        }
+    )
     def get(self):
-        """
-        Busca livros por título e/ou categoria.
-        """
         title = request.args.get("title")
         category = request.args.get("category")
+        min_price = request.args.get("min_price", type=float)
+        max_price = request.args.get("max_price", type=float)
+        rating = request.args.get("rating", type=int)
 
         query = "SELECT * FROM books WHERE 1=1"
         params = []
@@ -74,131 +89,95 @@ class BookSearch(Resource):
             query += " AND category = ?"
             params.append(category)
 
+        if min_price is not None:
+            query += " AND price >= ?"
+            params.append(min_price)
+
+        if max_price is not None:
+            query += " AND price <= ?"
+            params.append(max_price)
+
+        if rating is not None:
+            query += " AND rating >= ?"
+            params.append(rating)
+
         conn = get_db_connection()
         books = conn.execute(query, params).fetchall()
         conn.close()
 
         return books
 
-@books_bp.route("/top-rated", methods=["GET"])
-def top_rated_books():
-    """
-    Lista livros com melhor avaliação
-    ---
-    tags:
-      - Books
-    parameters:
-      - name: limit
-        in: query
-        type: integer
-        default: 10
-    responses:
-      200:
-        description: Lista de livros mais bem avaliados
-    """
-    from flask import request
+# ===============================
+# GET /api/v1/books/top-rated
+# ===============================
+@api.route("/top-rated")
+class TopRatedBooks(Resource):
+    @api.marshal_list_with(book_model)
+    @api.doc(
+        description="Lista livros com melhor avaliação",
+        params={"limit": "Quantidade máxima (default=10)"}
+    )
+    def get(self):
+        limit = request.args.get("limit", default=10, type=int)
 
-    limit = request.args.get("limit", default=10, type=int)
+        conn = get_db_connection()
+        books = conn.execute("""
+            SELECT * FROM books
+            WHERE rating = 5
+            ORDER BY price ASC
+            LIMIT ?
+        """, (limit,)).fetchall()
+        conn.close()
 
-    conn = get_db_connection()
-    cursor = conn.cursor()
+        return books
 
-    books = cursor.execute("""
-        SELECT * FROM books
-        WHERE rating = 5
-        ORDER BY price ASC
-        LIMIT ?
-    """, (limit,)).fetchall()
+# ===============================
+# GET /api/v1/books/price-range
+# ===============================
+@api.route("/price-range")
+class BooksByPriceRange(Resource):
+    @api.marshal_list_with(book_model)
+    @api.doc(
+        description="Filtra livros por faixa de preço",
+        params={
+            "min": "Preço mínimo",
+            "max": "Preço máximo"
+        }
+    )
+    def get(self):
+        min_price = request.args.get("min", type=float)
+        max_price = request.args.get("max", type=float)
 
-    conn.close()
+        if min_price is None or max_price is None:
+            api.abort(400, "Parâmetros min e max são obrigatórios")
 
-    return jsonify([dict(book) for book in books])
+        conn = get_db_connection()
+        books = conn.execute("""
+            SELECT * FROM books
+            WHERE price BETWEEN ? AND ?
+            ORDER BY price
+        """, (min_price, max_price)).fetchall()
+        conn.close()
 
-@books_bp.route("/price-range", methods=["GET"])
-def books_by_price_range():
-    """
-    Filtra livros por faixa de preço
-    ---
-    tags:
-      - Books
-    parameters:
-      - name: min
-        in: query
-        type: number
-        required: true
-      - name: max
-        in: query
-        type: number
-        required: true
-    responses:
-      200:
-        description: Lista de livros dentro da faixa de preço
-    """
-    from flask import request
+        return books
 
-    min_price = request.args.get("min", type=float)
-    max_price = request.args.get("max", type=float)
+# ===============================
+# GET /api/v1/books/stats
+# ===============================
+@api.route("/stats")
+class BooksStats(Resource):
+    @api.doc(description="Estatísticas gerais da coleção de livros")
+    def get(self):
+        conn = get_db_connection()
+        stats = conn.execute("""
+            SELECT
+                COUNT(*) AS total_books,
+                ROUND(AVG(price), 2) AS avg_price,
+                MIN(price) AS min_price,
+                MAX(price) AS max_price,
+                ROUND(AVG(rating), 2) AS avg_rating
+            FROM books
+        """).fetchone()
+        conn.close()
 
-    if min_price is None or max_price is None:
-        return jsonify({"error": "Parâmetros min e max são obrigatórios"}), 400
-
-    conn = get_db_connection()
-    cursor = conn.cursor()
-
-    books = cursor.execute("""
-        SELECT * FROM books
-        WHERE price BETWEEN ? AND ?
-        ORDER BY price
-    """, (min_price, max_price)).fetchall()
-
-    conn.close()
-
-    return jsonify([dict(book) for book in books])
-
-@books_bp.route("/search", methods=["GET"])
-def search_books():
-    category = request.args.get("category")
-    min_price = request.args.get("min_price", type=float)
-    max_price = request.args.get("max_price", type=float)
-    rating = request.args.get("rating", type=int)
-
-    query = "SELECT * FROM books WHERE 1=1"
-    params = []
-
-    if category:
-        query += " AND category = ?"
-        params.append(category)
-
-    if min_price is not None:
-        query += " AND price >= ?"
-        params.append(min_price)
-
-    if max_price is not None:
-        query += " AND price <= ?"
-        params.append(max_price)
-
-    if rating is not None:
-        query += " AND rating >= ?"
-        params.append(rating)
-
-    conn = get_db_connection()
-    books = conn.execute(query, params).fetchall()
-    conn.close()
-
-    return jsonify([dict(book) for book in books])
-
-@books_bp.route("/stats", methods=["GET"])
-def books_stats():
-    conn = get_db_connection()
-    stats = conn.execute("""
-        SELECT
-            COUNT(*) AS total_books,
-            ROUND(AVG(price), 2) AS avg_price,
-            MIN(price) AS min_price,
-            MAX(price) AS max_price,
-            ROUND(AVG(rating), 2) AS avg_rating
-        FROM books
-    """).fetchone()
-    conn.close()
-
-    return jsonify(dict(stats))
+        return dict(stats)

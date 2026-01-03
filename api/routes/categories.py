@@ -4,7 +4,6 @@ from flask import Blueprint, jsonify
 
 api = Namespace("categories", description="Categorias de livros")
 
-
 @api.route("/")
 class CategoryList(Resource):
     def get(self):
