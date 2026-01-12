@@ -221,6 +221,8 @@ Os endpoints de ML foram projetados como contrato de dados para cientistas de da
 
 Esses endpoints permitem integração direta com notebooks, pipelines de treinamento e experimentação de modelos.
 
+Em ambiente de produção, a API utiliza um banco de dados SQLite previamente populado para garantir estabilidade e previsibilidade.  
+O endpoint de scraping é mantido para ambientes de desenvolvimento e testes controlados, simulando o pipeline de ingestão de dados.
 
 ## Considerações Finais
 
@@ -231,3 +233,5 @@ A separação clara entre scraping, banco de dados, camada de API e endpoints vo
 A adoção de Swagger garante documentação clara e reutilizável, enquanto o uso de autenticação JWT protege rotas sensíveis, alinhando o projeto com boas práticas de produção.
 
 Apesar de utilizar SQLite por simplicidade, a arquitetura foi planejada para permitir fácil migração para bancos relacionais mais robustos, bem como integração futura com modelos de Machine Learning em produção.
+
+

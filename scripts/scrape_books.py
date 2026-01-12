@@ -22,6 +22,12 @@ import re
 import pandas as pd
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
+DATA_DIR.mkdir(exist_ok=True)
+
 
 # URL base do site
 BASE_URL = "https://books.toscrape.com/"
@@ -36,7 +42,7 @@ def get_soup(url: str) -> BeautifulSoup:
     """
     Faz uma requisição HTTP e retorna o BeautifulSoup da página.
     """
-    response = requests.get(url, headers=HEADERS)
+    response = requests.get(url, headers=HEADERS, timeout=15)
     response.encoding = "utf-8"
     response.raise_for_status()
     return BeautifulSoup(response.text, "html.parser")
@@ -184,7 +190,7 @@ def main():
 
     df = pd.DataFrame(all_books)
 
-    output_path = "data/books.csv"
+    output_path = DATA_DIR / "books.csv"
     df.to_csv(output_path, index=False, encoding="utf-8")
 
     print(f"Scraping finalizado! {len(df)} livros salvos em {output_path}")

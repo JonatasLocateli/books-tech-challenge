@@ -1,12 +1,11 @@
 import sqlite3
+import os
 
-DB_PATH = "data/books.db"
-
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.path.join(BASE_DIR, "data", "books.db")
 
 def get_db_connection():
-    """
-    Cria e retorna uma conexão com o banco SQLite.
-    """
     conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row  # permite acessar colunas por nome
+    conn.row_factory = sqlite3.Row
     return conn
+

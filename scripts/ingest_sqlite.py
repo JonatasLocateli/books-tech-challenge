@@ -8,14 +8,15 @@ Script de ingestão de dados:
 Este banco será usado posteriormente pela API Flask.
 """
 
+from pathlib import Path
 import sqlite3
 import pandas as pd
-from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "data"
 
-# Caminhos dos arquivos
-CSV_PATH = Path("data/books.csv")
-DB_PATH = Path("data/books.db")
+CSV_PATH = DATA_DIR / "books.csv"
+DB_PATH = DATA_DIR / "books.db"
 
 
 def create_connection(db_path: Path):
