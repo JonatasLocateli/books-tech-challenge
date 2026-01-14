@@ -17,27 +17,6 @@ O projeto inclui:
 
 ## Arquitetura do Projeto
 
-books-tech-challenge/
-│
-├── api/ # Código principal da API
-│ ├── routes/ # Arquivos de rotas (books, categories, health, stats, auth, ml, scraping)
-│ ├── database.py # Conexão e operações SQLite
-│ └── app.py # Criação do app Flask + registro de namespaces
-│
-├── dashboard/ # Dashboard Streamlit
-│ └── app.py
-│
-├── tests/ # Testes unitários e de integração
-│ ├── test_books.py
-│ ├── test_health.py
-│ └── test_auth.py
-│
-├── docs/ # Documentação adicional
-│
-├── requirements.txt # Dependências do projeto
-├── README.md # Este arquivo
-└── pyproject.toml # Configuração do Poetry
-
 ![](diagrama.jpeg)
 
 ---
