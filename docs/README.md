@@ -38,7 +38,7 @@ books-tech-challenge/
 ├── README.md # Este arquivo
 └── pyproject.toml # Configuração do Poetry
 
-(docs/diagrama.jpeg)
+![Texto alternativo](docs/diagrama.jpeg)
 
 ---
 
