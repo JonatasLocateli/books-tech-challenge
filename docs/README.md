@@ -128,29 +128,33 @@ GET	    /api/v1/books/price-range/	- Filtra livros por faixa de preço
 
 GET	    /api/v1/books/stats/	   -  Estatísticas gerais da coleção
 
+
 Categories
-Método	Rota	                    Descrição
-GET	    /api/v1/categories/	        Lista todas as categorias
-GET	    /api/v1/categories/<name>/	Livros por categoria
+
+GET	    /api/v1/categories/	   -     Lista todas as categorias
+GET	    /api/v1/categories/<name>/	- Livros por categoria
 
 Health
-Método	Rota	                    Descrição
-GET	    /api/v1/health/	            Verifica status da API e conexão com DB
+
+GET	    /api/v1/health/	     -       Verifica status da API e conexão com DB
+
 
 Stats
-Método	Rota	                    Descrição
-GET	    /api/v1/stats/overview/	    Estatísticas gerais
-GET	    /api/v1/stats/categories/	Estatísticas detalhadas por categoria
+
+GET	    /api/v1/stats/overview/	 -   Estatísticas gerais
+GET	    /api/v1/stats/categories/	- Estatísticas detalhadas por categoria
+
 
 ML (opcional)
-Método	Rota	                    Descrição
-GET	    /api/v1/ml/features/	    Dados formatados para features ML
-GET	    /api/v1/ml/training-data/	Dataset completo para treinamento
-POST	/api/v1/ml/predictions/ 	Recebe predições de modelos ML
+
+GET	    /api/v1/ml/features/	 -   Dados formatados para features ML
+GET	    /api/v1/ml/training-data/ -	Dataset completo para treinamento
+POST	/api/v1/ml/predictions/ -	Recebe predições de modelos ML
+
 
 Scraping (protegido)
-Método	Rota	                    Descrição
-POST	/api/v1/scraping/trigger/	Dispara scraping (mock, protegido por JWT)
+
+POST	/api/v1/scraping/trigger/ - Dispara scraping (mock, protegido por JWT)
 
 ### Exemplos de chamadas
 
