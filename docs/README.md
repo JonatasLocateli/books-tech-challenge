@@ -116,13 +116,17 @@ Authorization: Bearer <REFRESH_TOKEN>
 ### Endpoints da API
 
 Books
-Método	Rota	                    Descrição
-GET	    /api/v1/books/	            Lista todos os livros
-GET	    /api/v1/books/<id>/	        Detalhe de um livro por ID
-GET	    /api/v1/books/search/	    Busca livros por título e/ou categoria
-GET	    /api/v1/books/top-rated/	Lista livros melhor avaliados (limit opcional)
-GET	    /api/v1/books/price-range/	Filtra livros por faixa de preço
-GET	    /api/v1/books/stats/	    Estatísticas gerais da coleção
+GET	    /api/v1/books/	         -   Lista todos os livros
+
+GET	    /api/v1/books/<id>/	     -   Detalhe de um livro por ID
+
+GET	    /api/v1/books/search/	   - Busca livros por título e/ou categoria
+
+GET	    /api/v1/books/top-rated/	- Lista livros melhor avaliados (limit opcional)
+
+GET	    /api/v1/books/price-range/	- Filtra livros por faixa de preço
+
+GET	    /api/v1/books/stats/	   -  Estatísticas gerais da coleção
 
 Categories
 Método	Rota	                    Descrição
