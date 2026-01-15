@@ -6,6 +6,7 @@
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 > 🔗 **API pública:** [https://books-tech-challenge.onrender.com/api/v1/](https://books-tech-challenge.onrender.com/api/v1/)
+
 > 📊 **Dashboard público:** [https://books-tech-challenge.onrender.com/api/v1/](https://books-tech-dashboard.onrender.com)
 
 API RESTful para ingestão, persistência e exposição de dados de livros, com foco em **engenharia de dados** e **Machine Learning**. O projeto demonstra boas práticas de arquitetura, documentação e segurança, estando preparado para evolução em ambientes de produção.
@@ -30,7 +31,7 @@ O **Books Tech Challenge** é uma API desenvolvida em **Python** com **Flask** e
 
 ## 🌐 Ambiente Público (API Online)
 
-O projeto conta com uma **instância pública em execução**, permitindo testes, demonstração técnica e consumo externo sem necessidade de setup local.
+O projeto está disponível publicamente, permitindo **demonstração técnica, testes e avaliação de arquitetura**, sem necessidade de execução local.
 
 * **Base URL da API:**
   [https://books-tech-challenge.onrender.com/api/v1/](https://books-tech-challenge.onrender.com/api/v1/)
@@ -41,7 +42,8 @@ O projeto conta com uma **instância pública em execução**, permitindo testes
 * **URL pública do Dashboard:**
   [https://books-tech-dashboard.onrender.com/](https://books-tech-dashboard.onrender.com)
 
-> ℹ️ Este ambiente utiliza infraestrutura gratuita (Render). Em períodos de inatividade, pode ocorrer *cold start*, fazendo com que a primeira requisição leve alguns segundos para responder.
+> ℹ️ Tanto a API quanto o dashboard utilizam infraestrutura gratuita (Render).
+Em períodos de inatividade, pode ocorrer cold start, fazendo com que a primeira requisição leve alguns segundos.
 
 ---
 
