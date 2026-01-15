@@ -57,6 +57,12 @@ curl https://books-tech-challenge.onrender.com/api/v1/books/
 
 Ou acesse o Swagger e execute as requisições pela interface gráfica.
 
+Teste o Dashboard pelo navegador
+
+```arduino
+https://books-tech-dashboard.onrender.com/
+```
+
 ---
 
 ## 🏗️ Arquitetura
@@ -130,6 +136,20 @@ A API estará disponível em:
 
 * **API:** [http://127.0.0.1:5000/api/v1/](http://127.0.0.1:5000/api/v1/)
 * **Swagger UI:** [http://127.0.0.1:5000/api/v1/](http://127.0.0.1:5000/api/v1/)
+
+---
+
+## ▶️ Executando o Dashboard Localmente
+
+```bash
+streamlit run dashboard/app.py
+```
+
+O Dashboard estará disponível em:
+
+```arduino
+http://localhost:8501
+```
 
 ---
 
@@ -237,7 +257,7 @@ Este projeto foi desenvolvido com foco em **engenharia de Machine Learning**, in
 
 Embora utilize **SQLite** por simplicidade, a estrutura suporta migração para bancos mais robustos e integração com pipelines reais de ingestão e modelos em produção.
 
-A disponibilidade de um **ambiente público**, aliada à documentação via **Swagger**, autenticação **JWT** e organização arquitetural, torna este projeto adequado para apresentação profissional, desafios técnicos e portfólio.
+A disponibilidade de um **ambiente público**, aliada à documentação via **Swagger**, autenticação **JWT** e organização arquitetural, além de um Dashboard público, torna este projeto adequado para apresentação profissional, desafios técnicos e portfólio.
 
 ---
 
