@@ -257,7 +257,7 @@ Este projeto foi desenvolvido com foco em **engenharia de Machine Learning**, in
 
 Embora utilize **SQLite** por simplicidade, a estrutura suporta migração para bancos mais robustos e integração com pipelines reais de ingestão e modelos em produção.
 
-A disponibilidade de um **ambiente público**, aliada à documentação via **Swagger**, autenticação **JWT** e organização arquitetural, além de um Dashboard público, torna este projeto adequado para apresentação profissional, desafios técnicos e portfólio.
+A disponibilidade de um **ambiente público**, aliada à documentação via **Swagger**, autenticação **JWT**, organização arquitetural, além de um Dashboard público, torna este projeto completo e com excelente maturidade técnica.
 
 ---
 
