@@ -4,7 +4,7 @@ import streamlit as st
 
 API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:5000")
 
-st.title("Books Tech Challenge - Dashboard")
+st.title("📊 Books Tech Challenge - Dashboard")
 
 try:
     response = requests.get(f"{API_BASE_URL}/api/v1/books/stats/overview", timeout=10)
