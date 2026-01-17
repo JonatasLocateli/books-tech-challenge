@@ -5,8 +5,6 @@ import time
 import os
 
 from api.logger import logger
-
-# Namespaces RESTX
 from api.routes.books import api as books_ns
 from api.routes.categories import api as categories_ns
 from api.routes.health import api as health_ns
@@ -19,17 +17,11 @@ from api.routes.scraping import api as scraping_ns
 def create_app():
     app = Flask(__name__)
 
-    # ==========================
-    # CONFIGURAÇÕES
-    # ==========================
-    app.config["JWT_SECRET_KEY"] = "super-secret-key"  # em produção usar ENV
+    app.config["JWT_SECRET_KEY"] = "super-secret-key"  
     app.config["RESTX_MASK_SWAGGER"] = False
 
     jwt = JWTManager(app)
 
-    # ==========================
-    # API / SWAGGER
-    # ==========================
     api = Api(
         app,
         title="Books Tech Challenge API",
@@ -48,9 +40,6 @@ def create_app():
         security="Bearer Auth" 
     )
 
-    # ==========================
-    # REGISTRO DOS NAMESPACES
-    # ==========================
     api.add_namespace(books_ns, path="/api/v1/books")
     api.add_namespace(categories_ns, path="/api/v1/categories")
     api.add_namespace(health_ns, path="/api/v1/health")
@@ -59,9 +48,7 @@ def create_app():
     api.add_namespace(ml_ns, path="/api/v1/ml")
     api.add_namespace(scraping_ns, path="/api/v1/scraping")
 
-    # ==========================
-    # LOGS & MÉTRICAS
-    # ==========================
+
     @app.before_request
     def log_request():
         request.start_time = time.time()

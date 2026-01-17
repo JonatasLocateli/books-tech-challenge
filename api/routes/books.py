@@ -2,15 +2,11 @@ from flask_restx import Namespace, Resource, fields
 from flask import request
 from api.database import get_db_connection
 
-# Namespace do Flask-RESTX
 api = Namespace(
     "books",
     description="Operações relacionadas a livros"
 )
 
-# ===============================
-# MODELO SWAGGER
-# ===============================
 book_model = api.model("Book", {
     "id": fields.Integer(description="ID do livro"),
     "title": fields.String(description="Título do livro"),
@@ -22,9 +18,6 @@ book_model = api.model("Book", {
     "product_url": fields.String(description="URL do produto")
 })
 
-# ===============================
-# GET /api/v1/books
-# ===============================
 @api.route("/")
 class BookList(Resource):
     @api.marshal_list_with(book_model)
@@ -35,9 +28,6 @@ class BookList(Resource):
         conn.close()
         return books
 
-# ===============================
-# GET /api/v1/books/{id}
-# ===============================
 @api.route("/<int:book_id>")
 class BookDetail(Resource):
     @api.marshal_with(book_model)
@@ -55,9 +45,6 @@ class BookDetail(Resource):
 
         return book
 
-# ===============================
-# GET /api/v1/books/search
-# ===============================
 @api.route("/search")
 class BookSearch(Resource):
     @api.marshal_list_with(book_model)
@@ -107,9 +94,6 @@ class BookSearch(Resource):
 
         return books
 
-# ===============================
-# GET /api/v1/books/top-rated
-# ===============================
 @api.route("/top-rated")
 class TopRatedBooks(Resource):
     @api.marshal_list_with(book_model)
@@ -131,9 +115,6 @@ class TopRatedBooks(Resource):
 
         return books
 
-# ===============================
-# GET /api/v1/books/price-range
-# ===============================
 @api.route("/price-range")
 class BooksByPriceRange(Resource):
     @api.marshal_list_with(book_model)
@@ -161,9 +142,7 @@ class BooksByPriceRange(Resource):
 
         return books
 
-# ===============================
-# GET /api/v1/books/stats
-# ===============================
+
 @api.route("/stats")
 class BooksStats(Resource):
     @api.doc(description="Estatísticas gerais da coleção de livros")

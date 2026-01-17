@@ -1,12 +1,10 @@
 from flask_restx import Namespace, Resource
 from api.database import get_db_connection
 
-# Namespace do Flask-RESTX
 api = Namespace(
     "health",
     description="Health check da API"
 )
-
 
 @api.route("/")
 class Health(Resource):
